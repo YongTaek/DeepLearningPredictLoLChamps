@@ -1,0 +1,5 @@
+dataset_1.csv : 원딜과 서폿이 나뉜 데이터셋
+dataset_2.csv : 원딜과 서폿이 안나뉜 데이터셋
+champs.csv : 챔프 이름과 id
+
+출처 : https://www.kaggle.com/paololol/league-of-legends-ranked-matches
