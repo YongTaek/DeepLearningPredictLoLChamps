@@ -1,6 +1,6 @@
 import csv
 import numpy as np
-
+from sklearn.model_selection import train_test_split
 
 
 with open('participants_79.csv') as f:
@@ -37,7 +37,8 @@ with open('participants_79.csv') as f:
     wins = np.array(win)
     loses = np.array(lose)
 
-
+    X_train, X_test, Y_train, Y_test = train_test_split(wins, loses, test_size = 0.2, random_state = 1)
+    X_train, X_val, Y_train, Y_val = train_test_split(X_train, Y_train, test_size = 0.2, random_state = 1)
 
 
         
