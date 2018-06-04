@@ -22,14 +22,14 @@ with open('participants_79.csv') as f:
         for i in range(5):              #이긴 팀 
             champs_id = a[cnt][3]   
             L[i][champs_id]=1
-            ++cnt
+            cnt+=1
         result = np.array(L)
         win.append(result)
 
         for j in range(5):              #진 팀 
             champs_id = a[cnt][3]
             L[j][champs_id]=1
-            ++cnt
+            cnt+=1
         result = np.array(L)
         win.append(result)
 
