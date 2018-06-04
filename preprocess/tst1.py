@@ -38,25 +38,6 @@ with open('participants_79.csv') as f:
     loses = np.array(lose)
 
 
-    # #readerr = csv.reader(f)
-    #next(reader) 
-    # #print(list(readerr))
-    # for row in reader:
-         
-        # champs_id = row[2] #If champs_id row num is 2 
-        
-        # for i in range(5):
-        #     L[i][champs_id] = 1
-        
-    #     result = np.array(L)
-    #     win.append(result)
-         
-
-    #     for j in range(5):
-    #         L[i][champs_id] = 1
-        
-    #     result = np.array(L)
-    #     lose.append(result)
 
 
         
