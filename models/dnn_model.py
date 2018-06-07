@@ -437,6 +437,7 @@ with tf.Session() as sess:
         X_batches,Y_batches=makeBatchData(X_batch,Y_batch)
         accuracy_batch = []
         for k,(x_batch,y_batch) in enumerate(zip(X_batches,Y_batches)):
+            x_batch = np.reshape(x_batch, [batch_size, len(x_batch[0]) * len(x_batch[0][0])])
             accuracy_batch.append(sess.run(accuracy_set[k], feed_dict={models[k].X: X_batch, models[k].Y:Y_batch}))
             total_correct_preds[k] += accuracy_batch
     
