@@ -9,6 +9,14 @@ _Y_train = None
 _Y_test = None
 _Y_val = None
 
+_Origin_X_train = None
+_Origin_X_test = None
+_Origin_X_val = None
+
+_Origin_Y_train = None
+_Origin_Y_test = None
+_Origin_Y_val = None
+
 def get_X_train():
     global _X_train
     return _X_train
@@ -34,6 +42,16 @@ def set_X_val(arr):
     _X_val = arr
 
 # ---
+
+def init_train():
+    global _X_train
+    global _Y_train
+    global _Origin_X_train
+    global _Origin_Y_train
+
+    _X_train = _Origin_X_train
+    _Y_train = _Origin_Y_train
+
 
 def get_Y_train():
     global _Y_train
@@ -67,36 +85,45 @@ def preprocess():
     global _Y_train
     global _Y_test
     global _Y_val
+    global _Origin_X_train
+    global _Origin_X_test
+    global _Origin_X_val
 
-    f = open('participants_79.csv')
-    L = [[0 for cols in range(5)] for rows in range(138)]
+    global _Origin_Y_train
+    global _Origin_Y_test
+    global _Origin_Y_val
 
+
+    f = open('../datasets/dataset_1.csv')
+    L = [[0 for cols in range(138)] for rows in range(5)]
     win = []
     lose = []
 
     reader = csv.reader(f)
     a = list(reader)
-
+    print(len(a))
     #print(a[0])
     #print(a[0][1])
 
-    cnt = 0
+    cnt = 1
 
-    while 1: #조건 수정 
+    while cnt < 334101: #조건 수정
+        L = [[0 for cols in range(138)] for rows in range(5)]
 
         for i in range(5):              #이긴 팀 
-            champs_id = a[cnt][3]   
-            L[i][champs_id]=1
+            champs_id = a[cnt][3]
+            L[i][int(champs_id)]=1
             cnt+=1
         result = np.array(L)
         win.append(result)
 
-        for j in range(5):              #진 팀 
+        L = [[0 for cols in range(138)] for rows in range(5)]
+        for j in range(5):              #진 팀
             champs_id = a[cnt][3]
-            L[j][champs_id]=1
+            L[j][int(champs_id)]=1
             cnt+=1
         result = np.array(L)
-        win.append(result)
+        lose.append(result)
 
 
     wins = np.array(win)
@@ -104,6 +131,17 @@ def preprocess():
 
     _X_train, _X_test, _Y_train, _Y_test = train_test_split(wins, loses, test_size = 0.2, random_state = 1)
     _X_train, _X_val, _Y_train, _Y_val = train_test_split(_X_train, _Y_train, test_size = 0.2, random_state = 1)
+
+    _Origin_X_train = _X_train
+    _Origin_X_test = _X_test
+    _Origin_X_val = _X_val
+
+    _Origin_Y_train = _Y_train
+    _Origin_Y_test = _Y_test
+    _Origin_Y_val = _Y_val
+
+
+
 
 
             
