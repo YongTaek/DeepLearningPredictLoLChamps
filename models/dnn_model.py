@@ -405,7 +405,7 @@ with tf.Session() as sess:
               else:
                 new_y_batch = y_batch
               _, l = sess.run(
-                  [optimizers[k], losses[k]], feed_dict={Xs[k]: x_batch, Ys[k]: new_y_batch})
+                  [optimizers[k], losses[k]], feed_dict={Xs[k]: x_batch, Ys[k]: new_y_batch})   
               # Compute average loss
               total_loss[k] += l
             # _, l = sess.run([optimizer, loss], feed_dict={X: X_batch, Y: Y_batch})
@@ -420,6 +420,7 @@ with tf.Session() as sess:
 
     
     #TODO: pred -> models 중 하나로 변경
+
     
     #correct_preds_set=[]
     accuracy_set=[]
@@ -437,15 +438,24 @@ with tf.Session() as sess:
         X_batches,Y_batches=makeBatchData(X_batch,Y_batch)
         accuracy_batch = []
         for k,(x_batch,y_batch) in enumerate(zip(X_batches,Y_batches)):
+            if k != 0:
+                new_y_batch = []
+                for l in range(100):
+                    new_y_batch.append(y_batch[l][:-k])
+            else:
+                new_y_batch = y_batch
+
+            
+            # 5,138
             x_batch = np.reshape(x_batch, [batch_size, len(x_batch[0]) * len(x_batch[0][0])])
-            accuracy_batch.append(sess.run(accuracy_set[k], feed_dict={models[k].X: X_batch, models[k].Y:Y_batch}))
-            total_correct_preds[k] += accuracy_batch
+            accuracy_batch.append(sess.run(accuracy_set[k], feed_dict={Xs[k]: x_batch, Ys[k]: new_y_batch}))
+            total_correct_preds[k] += accuracy_batch[k]
     
     order=['First','Second','Third','Fourth','Fifth']
     all_total_correct_preds = 0
     for correct_preds,o in zip(total_correct_preds,order):
         all_total_correct_preds += correct_preds
-        print(o,'data_accuracy {0}'.format(correct_preds/get_X_test()))
+        print(o,'data_accuracy {0}'.format(correct_preds/len(get_X_test())))
         
     
     print('Accuracy {0}'.format(all_total_correct_preds/5))
