@@ -212,8 +212,6 @@ def yidsToTrainYids(ys): #(5,100,138)
 
   return TrainYids
 
-
- 
 def plus1ids(y, index):
   y[index] = 0
   y[index+1] = 1
@@ -404,6 +402,24 @@ with tf.Session() as sess:
                   new_y_batch.append(y_batch[l][:-k])
               else:
                 new_y_batch = y_batch
+              
+              ### assert
+              if k == 0:
+                assert (np.shape(Xs[k])[1] == np.shape(x_batch)[1] == 690)
+                assert (np.shape(Ys[k])[1] == np.shape(new_y_batch)[1] == 138)
+              elif k == 1:
+                assert (np.shape(Xs[k])[1] == np.shape(x_batch)[1] == 828)
+                assert (np.shape(Ys[k])[1] == np.shape(new_y_batch)[1] == 137)
+              elif k == 2:
+                assert (np.shape(Xs[k])[1] == np.shape(x_batch)[1] == 966)
+                assert (np.shape(Ys[k])[1] == np.shape(new_y_batch)[1] == 136)
+              elif k == 3:
+                assert (np.shape(Xs[k])[1] == np.shape(x_batch)[1] == 1104)
+                assert (np.shape(Ys[k])[1] == np.shape(new_y_batch)[1] == 135)
+              elif k == 4:
+                assert (np.shape(Xs[k])[1] == np.shape(x_batch)[1] == 1242)
+                assert (np.shape(Ys[k])[1] == np.shape(new_y_batch)[1] == 134)
+                
               _, l = sess.run(
                   [optimizers[k], losses[k]], feed_dict={Xs[k]: x_batch, Ys[k]: new_y_batch})   
               # Compute average loss
@@ -445,9 +461,26 @@ with tf.Session() as sess:
             else:
                 new_y_batch = y_batch
 
-            
             # 5,138
             x_batch = np.reshape(x_batch, [batch_size, len(x_batch[0]) * len(x_batch[0][0])])
+
+            ### assert
+            if k == 0:
+              assert (np.shape(Xs[k])[1] == np.shape(x_batch)[1] == 690)
+              assert (np.shape(Ys[k])[1] == np.shape(new_y_batch)[1] == 138)
+            elif k == 1:
+              assert (np.shape(Xs[k])[1] == np.shape(x_batch)[1] == 828)
+              assert (np.shape(Ys[k])[1] == np.shape(new_y_batch)[1] == 137)
+            elif k == 2:
+              assert (np.shape(Xs[k])[1] == np.shape(x_batch)[1] == 966)
+              assert (np.shape(Ys[k])[1] == np.shape(new_y_batch)[1] == 136)
+            elif k == 3:
+              assert (np.shape(Xs[k])[1] == np.shape(x_batch)[1] == 1104)
+              assert (np.shape(Ys[k])[1] == np.shape(new_y_batch)[1] == 135)
+            elif k == 4:
+              assert (np.shape(Xs[k])[1] == np.shape(x_batch)[1] == 1242)
+              assert (np.shape(Ys[k])[1] == np.shape(new_y_batch)[1] == 134)
+            
             accuracy_batch.append(sess.run(accuracy_set[k], feed_dict={Xs[k]: x_batch, Ys[k]: new_y_batch}))
             total_correct_preds[k] += accuracy_batch[k]
     
