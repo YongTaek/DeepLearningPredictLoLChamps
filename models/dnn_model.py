@@ -13,7 +13,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
-from preprocess.tst1 import *
+from tst1 import *
 
 preprocess() # in tst1.
 
@@ -48,28 +48,24 @@ def makeFifthData(x, y):
 
 def get_rand_trainset(batch_size):
   
-  # win : [[[0,0,...1,0,...0],[0,0,...1,0,...0],[0,0,...1,0,...0],[0,0,...1,0,...0],[0,0,...1,0,...0]], <- match1
-  #        [[0,0,...1,0,...0],[0,0,...1,0,...0],[0,0,...1,0,...0],[0,0,...1,0,...0],[0,0,...1,0,...0]], <- match2]
-  
-  # return : batch크기의 win, batch크기의 lose
   X_batch, X_remain_train, y_batch, y_remain_train = train_test_split(get_X_train(), get_Y_train(), shuffle=True, train_size=batch_size)
-  set_X_train(X_remain_train) # in tst1.py
-  set_Y_train(y_remain_train) # in tst1.py
-  
+  set_X_train(X_remain_train)
+  set_Y_train(y_remain_train)
+
+  assert (np.shape(X_batch)[1:] == (5,138))
+  assert (np.shape(y_batch)[1:] == (5,138))
   return X_batch, y_batch
 
 def get_rand_testset(batch_size):
-  
-  # win : [[[0,0,...1,0,...0],[0,0,...1,0,...0],[0,0,...1,0,...0],[0,0,...1,0,...0],[0,0,...1,0,...0]], <- match1
-  #        [[0,0,...1,0,...0],[0,0,...1,0,...0],[0,0,...1,0,...0],[0,0,...1,0,...0],[0,0,...1,0,...0]], <- match2]
-  
-  # return : batch크기의 win, batch크기의 lose,
-  
+
   X_batch, X_remain_test, Y_batch, Y_remain_test = train_test_split(get_X_test(), get_Y_test(), shuffle=True, train_size=batch_size)
+  set_X_test(X_remain_test)
+  set_Y_test(Y_remain_test)
+
+  assert (np.shape(X_batch)[1:] == (5,138))
+  assert (np.shape(Y_batch)[1:] == (5,138))
   
-  set_X_test(X_remain_test) # in tst1.py
-  set_Y_test(Y_remain_test) # in tst1.py
-  
+
   return X_batch, Y_batch
 
 def makeBatchData(X_batch, Y_batch):
@@ -110,6 +106,9 @@ def makeBatchData(X_batch, Y_batch):
     new_Y_batches.append(yidsToTrainYids(i))
 
   new_Y_batches = np.transpose(new_Y_batches, (1,0,2))
+
+  assert (np.shape(X_batches) == (5,100))
+  assert (np.shape(new_Y_batches) == (5,100,138))
 
   return X_batches, new_Y_batches
 
@@ -208,12 +207,13 @@ def yidsToTrainYids(ys): #(5,100,138)
   elif count4 == 4:
     ys[4] = minus4ids(ys[4], index4)
     TrainYids.append(ys[4])
-
+  
+  assert (np.shape(TrainYids) == (5,138))
 
   return TrainYids
 
 
-
+ 
 def plus1ids(y, index):
   y[index] = 0
   y[index+1] = 1
